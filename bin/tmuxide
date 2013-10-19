@@ -1,0 +1,85 @@
+#! /usr/bin/env zsh
+
+FILE="$0"
+PROG=`basename $0`
+
+function error_and_exit() {
+    echo "$PROG: $1 (use -h for help)" >&2
+    exit 2
+}
+
+function help_and_exit() {
+    man "$(dirname $FILE)/../share/man/man1/tmuxide.1"
+    exit 0
+}
+
+function version_and_exit() {
+    echo "tmuxide v0.0.1"
+    exit 0
+}
+
+function debug_message() {
+    if [[ $VERBOSE == true ]]; then
+        echo "$PROG: $1"
+    fi
+}
+
+function parse_options() {
+    ARGS=`gnu-getopt --quiet --name "$PROG" --long "help,session-name:,verbose,version" --options "hs:vV" -- "$@"`
+
+    if [[ $? -ne 0 ]]; then
+        error_and_exit 'Invalid arguments'
+    fi
+
+    eval set -- $ARGS
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -s | --session-name)  SESSION_NAME="$2";;
+            -h | --help)          help_and_exit;;
+            -v | --verbose)       VERBOSE=true;;
+            -V | --version)       version_and_exit;;
+            --)                   shift; break;;
+        esac
+        shift
+    done
+
+    if (( $# == 0 )); then
+        error_and_exit 'No project directory specified'
+    elif (( $# > 1 )); then
+        error_and_exit 'More than one project directory specified'
+    elif [[ -d $1 ]]; then
+        debug_message "'$1' found"
+        PROJECT_DIR=$1
+    else
+        error_and_exit "Project directory '$1' is not accessible"
+    fi
+}
+
+parse_options $@
+cd $PROJECT_DIR
+
+[[ -z $SESSION_NAME ]] && SESSION_NAME=tmuxide-session
+
+tmux has-session -t $SESSION_NAME 2>& /dev/null 
+if [[ $? -ne 0 ]]; then
+    # Create new tmux session, name it $SESSION_NAME and detach it
+    tmux new-session -s $SESSION_NAME -d
+    tmux split-window -v -p 20 -t $SESSION_NAME
+    tmux split-window -h -p 30 -t $SESSION_NAME.0
+    tmux split-window -h -p 40 -t $SESSION_NAME.1
+    tmux split-window -v -p 50 -t $SESSION_NAME.2
+
+    tmux send-keys -t $SESSION_NAME:0.0 'vim' C-m
+    tmux send-keys -t $SESSION_NAME:0.1 'tail -f log/development.log' C-m
+    tmux send-keys -t $SESSION_NAME:0.2 'zeus start' C-m
+    tmux send-keys -t $SESSION_NAME:0.3 'bundle exec guard' C-m
+
+    tmux select-pane -t $SESSION_NAME:0.0
+
+    tmux attach-session -t $SESSION_NAME
+else
+    tmux attach-session -t $SESSION_NAME
+fi
+
+# vim: ts=4 sts=4 sw=4 expandtab

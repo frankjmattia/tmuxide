@@ -1,0 +1,47 @@
+.TH TMUXIDE 1 "October 19, 2013"
+
+.SH NAME
+tmuxide - initiate a RoR development environment
+
+.SH SYNOPSIS
+.BI "tmuxide [ -hksvV ]"
+.BI "[ -c | --config=" "config-file" " ]"
+.BI "[ -s | --session-name=" "session-name" " ]"
+.I project-directory
+
+.SH DESCRIPTION
+.B tmuxide
+is used to initiate a RoR development environment. If a project is already opened it will reattach the tmux session.
+
+.SH OPTIONS
+
+.TP
+.BI "-h | --help"
+Display
+.BR tmuxide (1)
+and exit.
+
+.TP
+.BI "-k | --kill"
+Kill the tmux-session named
+.IR session-name .
+.RB "Must be used in combination with " "-s" "."
+
+.TP
+.BI "-s | --session-name=" "session-name"
+Operate on the tmux-session named
+.IR session-name .
+
+.TP
+.BI "-v | --verbose"
+Enable verbose output.
+
+.TP
+.BI "-V | --version"
+Print the verion information and exit.
+
+.SH AUTHOR
+Frank J. Mattia <frankjmattia@gmail.com>
+
+.SH "SEE ALSO"
+.BR tmux (1).
