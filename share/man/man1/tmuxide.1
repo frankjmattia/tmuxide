@@ -4,8 +4,11 @@
 tmuxide - initiate a RoR development environment
 
 .SH SYNOPSIS
-.BI "tmuxide [ -hksvV ]"
-.BI "[ -c | --config=" "config-file" " ]"
+.B "tmuxide [ -h | --help ]"
+.br
+.B "tmuxide [ -V | --version ]"
+.br
+.B "tmuxide [ -v ]"
 .BI "[ -s | --session-name=" "session-name" " ]"
 .I project-directory
 
@@ -20,12 +23,6 @@ is used to initiate a RoR development environment. If a project is already opene
 Display
 .BR tmuxide (1)
 and exit.
-
-.TP
-.BI "-k | --kill"
-Kill the tmux-session named
-.IR session-name .
-.RB "Must be used in combination with " "-s" "."
 
 .TP
 .BI "-s | --session-name=" "session-name"
