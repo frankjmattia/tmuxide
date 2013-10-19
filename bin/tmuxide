@@ -68,12 +68,14 @@ if [[ $? -ne 0 ]]; then
     tmux split-window -v -p 20 -t $SESSION_NAME
     tmux split-window -h -p 30 -t $SESSION_NAME.0
     tmux split-window -h -p 40 -t $SESSION_NAME.1
-    tmux split-window -v -p 50 -t $SESSION_NAME.2
+    tmux split-window -v -p 75 -t $SESSION_NAME.2
+    tmux split-window -v -p 50 -t $SESSION_NAME.4
 
     tmux send-keys -t $SESSION_NAME:0.0 'vim' C-m
-    tmux send-keys -t $SESSION_NAME:0.1 'tail -f log/development.log' C-m
+    tmux send-keys -t $SESSION_NAME:0.1 'tail -f log/development.log | grep -v "^$"' C-m
     tmux send-keys -t $SESSION_NAME:0.2 'zeus start' C-m
     tmux send-keys -t $SESSION_NAME:0.3 'bundle exec guard' C-m
+    tmux send-keys -t $SESSION_NAME:0.4 'sleep 10; zeus console' C-m
 
     tmux select-pane -t $SESSION_NAME:0.0
 
