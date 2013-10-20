@@ -65,9 +65,9 @@ tmux has-session -t $SESSION_NAME 2>& /dev/null
 if [[ $? -ne 0 ]]; then
     # Create new tmux session, name it $SESSION_NAME and detach it
     tmux new-session -s $SESSION_NAME -d
-    tmux split-window -v -p 20 -t $SESSION_NAME
-    tmux split-window -h -p 30 -t $SESSION_NAME.0
-    tmux split-window -h -p 40 -t $SESSION_NAME.1
+    tmux split-window -v -p 25 -t $SESSION_NAME
+    tmux split-window -h -p 25 -t $SESSION_NAME.0
+    tmux split-window -h -p 38 -t $SESSION_NAME.1
     tmux split-window -v -p 75 -t $SESSION_NAME.2
     tmux split-window -v -p 50 -t $SESSION_NAME.4
 
