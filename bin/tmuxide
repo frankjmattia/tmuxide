@@ -1,15 +1,16 @@
-#! /usr/bin/env zsh
+# /usr/bin/env zsh
 
 FILE="$0"
+BASE_DIR="$(dirname $FILE)"
 PROG=`basename $0`
 
 function error_and_exit() {
-    echo "$PROG: $1 (use -h for help)" >&2
+    echo "${PROG}: ${1} (use -h for help)" >&2
     exit 2
 }
 
 function help_and_exit() {
-    man "$(dirname $FILE)/../share/man/man1/tmuxide.1"
+    man "${BASE_DIR}/../share/man/man1/tmuxide.1"
     exit 0
 }
 
@@ -57,27 +58,32 @@ function parse_options() {
 }
 
 parse_options $@
+
 cd $PROJECT_DIR
 
 [[ -z $SESSION_NAME ]] && SESSION_NAME="tmuxide-$RANDOM"
 
-tmux has-session -t $SESSION_NAME 2>& /dev/null 
-if [[ $? -ne 0 ]]; then
+tmux has-session -t $SESSION_NAME 2>& /dev/null
+
+if [[ $? -ne 0 ]] ; then
     # Create new tmux session, name it $SESSION_NAME and detach it
     tmux new-session -s $SESSION_NAME -d
+    tmux rename-window $PROJECT_DIR
+
     tmux split-window -v -p 20 -t $SESSION_NAME
     tmux split-window -h -p 40 -t $SESSION_NAME.0
     tmux split-window -v -p 66 -t $SESSION_NAME.2
     tmux split-window -v -p 50 -t $SESSION_NAME.3
-    #tmux split-window -v -p 50 -t $SESSION_NAME.3
 
+    # vim pane
     tmux send-keys -t $SESSION_NAME:0.0 'vim' C-m
 
-    tmux select-pane -t $SESSION_NAME:0.0
+    # Foreman/Development Log
+    tmux send-keys -t $SESSION_NAME:0.1 "${BASE_DIR}/log-pane ${SESSION_NAME}" C-m
 
-    tmux attach-session -t $SESSION_NAME
-else
-    tmux attach-session -t $SESSION_NAME
+    tmux select-pane -t $SESSION_NAME:0.0
 fi
 
-# vim: ts=4 sts=4 sw=4 expandtab
+tmux attach-session -t $SESSION_NAME
+
+# vim: ts=4 sts=4 sw=4 expandtab filetype=zsh
