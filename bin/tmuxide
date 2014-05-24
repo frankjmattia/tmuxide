@@ -63,20 +63,16 @@ cd $PROJECT_DIR
 
 [[ -z $SESSION_NAME ]] && SESSION_NAME="tmuxide-$RANDOM"
 
-tmux has-session -t $SESSION_NAME 2>& /dev/null
+tmux has-session -t $SESSION_NAME &> /dev/null
 
 if [[ $? -ne 0 ]] ; then
     # Create new tmux session, name it $SESSION_NAME and detach it
-    tmux new-session -s $SESSION_NAME -d
-    tmux rename-window $PROJECT_DIR
+    tmux new-session -d -n $PROJECT_DIR -s $SESSION_NAME 'zsh -ic "vim"'
 
     tmux split-window -v -p 20 -t $SESSION_NAME
     tmux split-window -h -p 40 -t $SESSION_NAME.0
     tmux split-window -v -p 66 -t $SESSION_NAME.2
     tmux split-window -v -p 50 -t $SESSION_NAME.3
-
-    # vim pane
-    tmux send-keys -t $SESSION_NAME:0.0 'vim' C-m
 
     # Foreman/Development Log
     tmux send-keys -t $SESSION_NAME:0.1 "${BASE_DIR}/log-pane ${SESSION_NAME}" C-m

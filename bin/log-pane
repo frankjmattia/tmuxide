@@ -61,7 +61,8 @@ parse_options $@
 
 unset TMUX
 tmux new-session -d -n 'Foreman' -s "${SESSION_NAME}" 'zsh -ic "foreman start"'
-tmux new-window -d -n 'Log Output' -t "${SESSION_NAME}:1" 'tail -F log/development.log | grep -v "^$"'
+tmux new-window -d -n 'Log Output' -t "${SESSION_NAME}:1" 'zsh -ic "tail -F log/development.log | grep -v \"^$\""'
+tmux new-window -d -n 'Console' -t "${SESSION_NAME}:2" 'zsh -ic "spring rails console"'
 tmux attach-session -t "${SESSION_NAME}"
 
 # vim: ts=4 sts=4 sw=4 expandtab filetype=zsh
