@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([tmuxide], [0.0.1], [frankjmattia+tmuxide@gmail.com])
+AC_INIT([tmuxide], [0.0.3], [frankjmattia+tmuxide@gmail.com])
 AM_INIT_AUTOMAKE
 AC_OUTPUT(Makefile man/Makefile scripts/Makefile)
 # Checks for programs.
