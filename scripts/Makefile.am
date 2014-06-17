@@ -5,7 +5,7 @@ EXTRA_DIST = tmuxide.in log-pane.in
 
 do_subst = sed \
 	-e 's,[@]PACKAGE[@],$(PACKAGE),g' \
-	-e 's,[@]VERSION[@],$(VERSION),g'
+	-e 's,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g'
 
 tmuxide: tmuxide.in Makefile
 	$(do_subst) < $(srcdir)/tmuxide.in > tmuxide

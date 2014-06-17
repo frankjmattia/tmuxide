@@ -26,7 +26,7 @@ function debug_message() {
 }
 
 function parse_options() {
-    ARGS=`gnu-getopt --quiet --name "$PROG" --long "help,session-name:,verbose,version" --options "hs:vV" -- "$@"`
+    ARGS=`$(brew --prefix)/opt/gnu-getopt/bin/getopt --quiet --name "$PROG" --long "help,session-name:,verbose,version" --options "hs:vV" -- "$@"`
 
     if [[ $? -ne 0 ]]; then
         error_and_exit 'Invalid arguments'
