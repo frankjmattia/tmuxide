@@ -1,5 +1,5 @@
-dist_bin_SCRIPTS = tmuxide log-pane
-DISTCLEANFILES = $(dist_bin_SCRIPTS)
+dist_libexec_SCRIPTS = tmuxide log-pane
+DISTCLEANFILES = $(dist_libexec_SCRIPTS)
 
 EXTRA_DIST = tmuxide.in log-pane.in
 
